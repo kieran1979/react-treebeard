@@ -16,8 +16,10 @@ const Ul = styled('ul', {
 
 class TreeBeard extends React.Component {
     render() {
-        const {animations, decorators, data: propsData, onToggle, style} = this.props;
+        const {animations, decorators, data: propsData, onToggle, style, onRightClick} = this.props;
         let data = propsData;
+
+        console.log(this.props);
 
         // Support Multiple Root Nodes. Its not formally a tree, but its a use-case.
         if (!Array.isArray(data)) {
@@ -32,6 +34,7 @@ class TreeBeard extends React.Component {
                               key={node.id || index}
                               node={node}
                               onToggle={onToggle}
+                              onRightClick={onRightClick}
                               style={style.tree.node}/>
                 )}
             </Ul>
@@ -50,6 +53,7 @@ TreeBeard.propTypes = {
         PropTypes.bool
     ]),
     onToggle: PropTypes.func,
+    onRightClick: PropTypes.func,
     decorators: PropTypes.object
 };
 
