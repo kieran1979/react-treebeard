@@ -1,68 +1,26 @@
-'use strict';
-
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {Fragment, PureComponent} from 'react';
 import ReactDOM from 'react-dom';
-import {Treebeard, decorators} from '../src/index';
-import styled from '@emotion/styled';
 
-
+import {Treebeard, decorators} from '../src';
+import {Div} from '../src/components/common';
 import data from './data';
 import styles from './styles';
 import * as filters from './filter';
+import Header from './Header';
+import NodeViewer from './NodeViewer';
 
-const Div = styled('Div', {
-    shouldForwardProp: prop => ['className', 'children'].indexOf(prop) !== -1
-})(({ style }) => style);
-
-const HELP_MSG = 'Select A Node To See Its Data Structure Here...';
-
-// Example: Customising The Header Decorator To Include Icons
-decorators.Header = ({style, node}) => {
-    const iconType = node.children ? 'folder' : 'file-text';
-    const iconClass = `fa fa-${iconType}`;
-    const iconStyle = {marginRight: '5px'};
-
-    return (
-        <Div style={style.base}>
-            <Div style={style.title}>
-                <i className={iconClass} style={iconStyle}/>
-
-                {node.name}
-            </Div>
-        </Div>
-    );
-};
-
-class NodeViewer extends React.Component {
-    render() {
-        const style = styles.viewer;
-        let json = JSON.stringify(this.props.node, null, 4);
-
-        if (!json) {
-            json = HELP_MSG;
-        }
-
-        return <Div style={style.base}>{json}</Div>;
-    }
-}
-NodeViewer.propTypes = {
-    node: PropTypes.object
-};
-
-class DemoTree extends React.Component {
-    constructor() {
-        super();
-
+class DemoTree extends PureComponent {
+    constructor(props) {
+        super(props);
         this.state = {data};
         this.onToggle = this.onToggle.bind(this);
     }
 
     onToggle(node, toggled) {
-        const {cursor} = this.state;
+        const {cursor, data} = this.state;
 
         if (cursor) {
-            cursor.active = false;
+            this.setState(() => ({cursor, active: false}));
         }
 
         node.active = true;
@@ -70,44 +28,47 @@ class DemoTree extends React.Component {
             node.toggled = toggled;
         }
 
-        this.setState({cursor: node});
+        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
     }
 
-    onFilterMouseUp(e) {
-        const filter = e.target.value.trim();
+    onFilterMouseUp({target: {value}}) {
+        const filter = value.trim();
         if (!filter) {
-            return this.setState({data});
+            return this.setState(() => ({data}));
         }
-        var filtered = filters.filterTree(data, filter);
+        let filtered = filters.filterTree(data, filter);
         filtered = filters.expandFilteredNodes(filtered, filter);
-        this.setState({data: filtered});
+        this.setState(() => ({data: filtered}));
     }
 
     render() {
-        const {data: stateData, cursor} = this.state;
-
+        const {data, cursor} = this.state;
         return (
-            <Div>
+            <Fragment>
                 <Div style={styles.searchBox}>
                     <Div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-search"/>
+                            <i className="fa fa-search"/>
                         </span>
-                        <input className="form-control"
-                               onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="Search the tree..."
-                               type="text"/>
+                        <input
+                            className="form-control"
+                            onKeyUp={this.onFilterMouseUp.bind(this)}
+                            placeholder="Search the tree..."
+                            type="text"
+                        />
                     </Div>
                 </Div>
                 <Div style={styles.component}>
-                    <Treebeard data={stateData}
-                               decorators={decorators}
-                               onToggle={this.onToggle}/>
+                    <Treebeard
+                        data={data}
+                        decorators={{...decorators, Header}}
+                        onToggle={this.onToggle}
+                    />
                 </Div>
                 <Div style={styles.component}>
                     <NodeViewer node={cursor}/>
                 </Div>
-            </Div>
+            </Fragment>
         );
     }
 }

@@ -1,6 +1,6 @@
 # react-treebeard
 
-[![Build Status](https://travis-ci.org/storybooks/react-treebeard.svg?branch=master)](https://travis-ci.org/storybooks/react-treebeard) [![Coverage Status](https://coveralls.io/repos/storybooks/react-treebeard/badge.svg?branch=master&service=github)](https://coveralls.io/github/storybooks/react-treebeard?branch=master)
+[![Build Status](https://travis-ci.org/storybookjs/react-treebeard.svg?branch=master)](https://travis-ci.org/storybookjs/react-treebeard) [![Coverage Status](https://coveralls.io/repos/storybookjs/react-treebeard/badge.svg?branch=master&service=github)](https://coveralls.io/github/storybookjs/react-treebeard?branch=master)
 
 React Tree View Component. Data-Driven, Fast, Efficient and Customisable.
 
@@ -10,15 +10,13 @@ React Tree View Component. Data-Driven, Fast, Efficient and Customisable.
 npm install react-treebeard --save
 ```
 
-### [Example](http://storybooks.github.io/react-treebeard/)
+### [Example](http://storybookjs.github.io/react-treebeard/)
 
-An online example from the `/example` directory can be found here: [Here](http://storybooks.github.io/react-treebeard/)
+An online example from the `/example` directory can be found here: [Here](http://storybookjs.github.io/react-treebeard/)
 
 ### Quick Start
 ```javascript
-'use strict';
-
-import React from 'react';
+import React, {PureComponent} from 'react';
 import ReactDOM from 'react-dom';
 import {Treebeard} from 'react-treebeard';
 
@@ -53,19 +51,26 @@ const data = {
     ]
 };
 
-class TreeExample extends React.Component {
+class TreeExample extends PureComponent {
     constructor(props){
         super(props);
-        this.state = {};
-        this.onToggle = this.onToggle.bind(this);
+        this.state = {data};
     }
+    
     onToggle(node, toggled){
-        if(this.state.cursor){this.state.cursor.active = false;}
+        const {cursor, data} = this.state;
+        if (cursor) {
+            this.setState(() => ({cursor, active: false}));
+        }
         node.active = true;
-        if(node.children){ node.toggled = toggled; }
-        this.setState({ cursor: node });
+        if (node.children) { 
+            node.toggled = toggled; 
+        }
+        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
     }
+    
     render(){
+        const {data} = this.state;
         return (
             <Treebeard
                 data={data}
@@ -73,6 +78,34 @@ class TreeExample extends React.Component {
             />
         );
     }
+}
+
+const content = document.getElementById('content');
+ReactDOM.render(<TreeExample/>, content);
+```
+
+If you use react-hooks you should do something like this:
+```javascript
+import React, {useState} from 'react';
+const TreeExample = () => {
+    const [data, setData] = useState(data);
+    const [cursor, setCursor] = useState(false);
+    
+    const onToggle = (node, toggled) => {
+        if (cursor) {
+            cursor.active = false;
+        }
+        node.active = true;
+        if (node.children) {
+            node.toggled = toggled;
+        }
+        setCursor(node);
+        setData(Object.assign({}, data))
+    }
+    
+    return (
+       <Treebeard data={data} onToggle={onToggle}/>
+    )
 }
 
 const content = document.getElementById('content');

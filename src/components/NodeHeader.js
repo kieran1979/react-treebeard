@@ -1,11 +1,9 @@
-'use strict';
-
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import shallowEqual from 'shallowequal';
 import deepEqual from 'deep-equal';
 
-class NodeHeader extends React.Component {
+class NodeHeader extends Component {
     shouldComponentUpdate(nextProps) {
         const props = this.props;
         const nextPropKeys = Object.keys(nextProps);
@@ -29,10 +27,14 @@ class NodeHeader extends React.Component {
         const {animations, decorators, node, onClick, style, onRightClick} = this.props;
         const {active, children} = node;
         const terminal = !children;
-        const container = [style.link, active ? style.activeLink : null];
-        const headerStyles = Object.assign({container}, style);
-
+        let styles;
+        if (active) {
+            styles = Object.assign(style, {container: {...style.link, ...style.activeLink}});
+        } else {
+            styles = style;
+        }
         return (
+<<<<<<< HEAD:src/components/header.js
             <decorators.Container animations={animations}
                                   decorators={decorators}
                                   node={node}
@@ -40,6 +42,12 @@ class NodeHeader extends React.Component {
                                   onRightClick={onRightClick}
                                   style={headerStyles}
                                   terminal={terminal}/>
+=======
+            <decorators.Container
+                {...{animations, decorators, node, onClick, terminal}}
+                style={styles}
+            />
+>>>>>>> 4d09c82da9da0d89ff4ecaa170f2b2eea5876636:src/components/NodeHeader.js
         );
     }
 }

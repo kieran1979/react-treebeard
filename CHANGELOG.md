@@ -1,6 +1,21 @@
 # Change log
 
-### vNEXT
+### v3.2.3
+- Fix background when node is active [PR #196](https://github.com/storybooks/react-treebeard/pull/196)
+- Add unit testing (Treebeard, TreeNode and NodeHeader)
+- Add pre-push to husky for run test
+
+### v3.2.2
+- Fix merge styles and destruct styles [PR #194](https://github.com/storybooks/react-treebeard/pull/194)
+
+### v3.2.1
+- Fix merge styles broken on chrome v74 [PR #118](https://github.com/storybooks/react-treebeard/pull/118)
+
+### v3.2.0
+- Fix active link [PR #147](https://github.com/storybooks/react-treebeard/pull/147)
+- Fix not change toggle when animations are false [PR #174](https://github.com/storybooks/react-treebeard/pull/174)
+- Upgrade dependencies and change Component to PureComponent [PR #168](https://github.com/storybooks/react-treebeard/pull/168)
+- Move components to different directories and upgrade @emotion/styles dependency [PR #178](https://github.com/storybooks/react-treebeard/pull/178)
 
 ### v2.1.0
 - Add `React 16.0` to peerDependencies [PR #102](https://github.com/alexcurtis/react-treebeard/pull/102)

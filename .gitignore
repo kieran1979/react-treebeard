@@ -1,3 +1,6 @@
+# IDE Folders
+**/.*/
+
 # Logs
 logs
 *.log
@@ -26,4 +29,8 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
+<<<<<<< HEAD
 
+=======
+dist/
+>>>>>>> 4d09c82da9da0d89ff4ecaa170f2b2eea5876636
