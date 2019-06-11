@@ -26,10 +26,11 @@ class Container extends PureComponent {
     }
 
     render() {
-        const {style, decorators, terminal, onClick, node} = this.props;
+        const {style, decorators, terminal, onClick, node, onRightClick} = this.props;
         return (
             <div
                 onClick={onClick}
+                onContextMenu={onRightClick}
                 style={node.active ? {...style.container} : {...style.link}}
             >
                 {!terminal ? this.renderToggle() : null}
@@ -48,7 +49,8 @@ Container.propTypes = {
         PropTypes.object,
         PropTypes.bool
     ]).isRequired,
-    node: PropTypes.object.isRequired
+    node: PropTypes.object.isRequired,
+    onRightClick: PropTypes.func
 };
 
 export default Container;

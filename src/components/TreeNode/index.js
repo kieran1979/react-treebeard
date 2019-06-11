@@ -22,6 +22,17 @@ class TreeNode extends PureComponent {
         }
     }
 
+    onRightClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const {node, onRightClick} = this.props;
+
+        if(onRightClick) {
+            onRightClick(e, node);
+        }
+    }
+
     animations() {
         const {animations, node} = this.props;
         if (!animations) {
@@ -78,7 +89,7 @@ class TreeNode extends PureComponent {
         const {...restAnimationInfo} = animations.drawer;
         return (
             <Li style={style.base}>
-                <NodeHeader {...{decorators, animations, node, style}} onClick={() => this.onClick()}/>
+                <NodeHeader {...{decorators, animations, node, style}} onClick={() => this.onClick()} onRightClick={(e) => this.onRightClick(e)}/>
                 <Drawer restAnimationInfo={{...restAnimationInfo}}>
                     {node.toggled ? this.renderChildren(decorators, animations) : null}
                 </Drawer>

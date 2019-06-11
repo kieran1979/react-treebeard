@@ -35,7 +35,7 @@ class NodeHeader extends Component {
         }
         return (
             <decorators.Container
-                {...{animations, decorators, node, onClick, terminal}}
+                {...{animations, decorators, node, onClick, terminal, onRightClick}}
                 style={styles}
             />
         );

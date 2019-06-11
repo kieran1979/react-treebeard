@@ -69,7 +69,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.10",
-    "@emotion/styled": "^10.0.10",
+    "@emotion/styled": "^10.0.12",
     "deep-equal": "^1.0.1",
     "shallowequal": "^1.1.0",
     "velocity-react": "^1.4.1"
