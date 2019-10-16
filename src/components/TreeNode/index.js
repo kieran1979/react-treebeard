@@ -25,6 +25,8 @@ class TreeNode extends PureComponent {
     onRightClick(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        
         
         const {node, onRightClick} = this.props;
 
@@ -55,7 +57,7 @@ class TreeNode extends PureComponent {
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style, onToggle} = this.props;
+        const {animations, decorators: propDecorators, node, style, onToggle, onRightClick} = this.props;
 
         if (node.loading) {
             return (
@@ -72,7 +74,7 @@ class TreeNode extends PureComponent {
             <Ul style={style.subtree}>
                 {children.map((child, index) => (
                     <TreeNode
-                        {...{onToggle, animations, style}}
+                        {...{onToggle, animations, style, onRightClick}}
                         decorators={propDecorators}
                         key={child.id || index}
                         node={child}
@@ -100,6 +102,7 @@ class TreeNode extends PureComponent {
 
 TreeNode.propTypes = {
     onToggle: PropTypes.func,
+    onRightClick: PropTypes.func,
     style: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
     decorators: PropTypes.object.isRequired,
